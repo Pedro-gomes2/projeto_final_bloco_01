@@ -1,5 +1,8 @@
 import leia from "readline-sync";
 import { Colors } from './src/util/Colors';
+import { Input } from "./src/util/Inputs";
+
+let tipoentrega = ["Retirada no Balcão", "Entrega em Domicilio"];
 
 export function main() {
 
@@ -43,7 +46,7 @@ export function main() {
                 break;
             case 2:
                 console.log(Colors.fg.whitestrong, "\n\nListar todos os Pedidos \n\n", Colors.reset);
-
+                
                 keyPress()
                 break;
             case 3:
@@ -87,3 +90,42 @@ function keyPress(): void {
 }
 
 main();
+
+
+// função Cria pedido
+function criarConta(){
+
+    console.log("Digite o Nome do Cliente: ")
+    const cliente = Input.questionInt("");
+
+    console.log("Digite o prato : ")
+    const prato = Input.question("");
+
+    console.log("Digite a bebida: ")
+    const bebida = Input.question("");
+    
+
+    console.log("Digite o Valor Total: ")
+    const valor = Input.questionFloat("");
+
+    console.log("Digite o tipo de entrega;")
+    const tipo = Input.keyInSelect(tipoentrega, "", { cancel: false}) + 1;
+
+    switch(tipo){
+        case 1: // Cria um objeto da classe balcão
+            console.log("Digite o Horario da Retirada: ");
+            const retirada = Input.question("");
+            //pedido.cadastrar(new ContaCorrente(
+               // contas.gerarNumero(), agencia, titular, tipo, saldo, limite));
+        break;
+
+        // case 2: // Cria um objeto da classe Conta Poupança
+        //     console.log("Digite o dia do aniversário da conta: ");
+        //     const aniversario = Input.questionInt("");
+        //     contas.cadastrar(new ContaPoupanca(
+        //         contas.gerarNumero(), agencia, titular, tipo, saldo, aniversario));
+        // break;
+
+    }
+
+}

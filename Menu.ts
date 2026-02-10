@@ -1,12 +1,19 @@
 import leia from "readline-sync";
 import { Colors } from './src/util/Colors';
 import { Input } from "./src/util/Inputs";
+import { PensaoController } from "./src/PensaoController/Pensaocontroller";
+import { Balcao } from "./src/model/Balcao";
+import { Entrega } from "./src/model/Entrega";
+import { defaultCharSingleByte } from "iconv-lite";
 
-let tipoentrega = ["Retirada no Balcão", "Entrega em Domicilio"];
+const pedidos = new PensaoController();
+
+const tipoentrega = ["Retirada no Balcão", "Entrega em Domicilio"];
 
 export function main() {
 
     let opcao: number;
+    criarpedidosTeste();
 
     while (true) {
 
@@ -41,27 +48,27 @@ export function main() {
         switch (opcao) {
             case 1:
                 console.log(Colors.fg.whitestrong, "\n\nInformações do Pedido\n\n", Colors.reset);
-                
+                criarConta();
                 keyPress()
                 break;
             case 2:
                 console.log(Colors.fg.whitestrong, "\n\nListar todos os Pedidos \n\n", Colors.reset);
-                
+                pedidos.listaPedidos();
                 keyPress()
                 break;
             case 3:
                 console.log(Colors.fg.whitestrong, "\n\nBuscar Pedido por ID \n\n", Colors.reset);
-
+                buscarPedido();
                 keyPress()
                 break;
             case 4:
                 console.log(Colors.fg.whitestrong, "\n\nAtualizar Pedido\n\n", Colors.reset);
-
+                atualizarConta();
                 keyPress()
                 break;
             case 5:
                 console.log(Colors.fg.whitestrong, "\n\n Deletar   Pedido  \n\n", Colors.reset);
-
+                deletarContaPorNumero();
                 keyPress()
             break;
            
@@ -96,7 +103,7 @@ main();
 function criarConta(){
 
     console.log("Digite o Nome do Cliente: ")
-    const cliente = Input.questionInt("");
+    const cliente = Input.question("");
 
     console.log("Digite o prato : ")
     const prato = Input.question("");
@@ -105,8 +112,8 @@ function criarConta(){
     const bebida = Input.question("");
     
 
-    console.log("Digite o Valor Total: ")
-    const valor = Input.questionFloat("");
+    console.log("Digite o quantidade Total: ")
+    const quantidade = Input.questionFloat("");
 
     console.log("Digite o tipo de entrega;")
     const tipo = Input.keyInSelect(tipoentrega, "", { cancel: false}) + 1;
@@ -115,17 +122,133 @@ function criarConta(){
         case 1: // Cria um objeto da classe balcão
             console.log("Digite o Horario da Retirada: ");
             const retirada = Input.question("");
-            //pedido.cadastrar(new ContaCorrente(
-               // contas.gerarNumero(), agencia, titular, tipo, saldo, limite));
+            pedidos.cadastrarPedido(new Balcao (pedidos.gerarNumero(),cliente,prato,bebida,quantidade,tipo,retirada ));
+        break;
+        case 2: // Cria um objeto da classe Entrega
+            console.log("Digite o seu endereço: ");
+            const endereco = Input.question("");
+            console.log("Digite o quantidade da Taxa: ");
+            const tx = Input.questionFloat("");
+            pedidos.cadastrarPedido(new Entrega(pedidos.gerarNumero(),cliente,prato,bebida,quantidade,tipo,endereco,tx));
         break;
 
-        // case 2: // Cria um objeto da classe Conta Poupança
-        //     console.log("Digite o dia do aniversário da conta: ");
-        //     const aniversario = Input.questionInt("");
-        //     contas.cadastrar(new ContaPoupanca(
-        //         contas.gerarNumero(), agencia, titular, tipo, saldo, aniversario));
-        // break;
+        
+
+
+
+
 
     }
+
+}
+//pedidos Para Teste
+
+function criarpedidosTeste(): void {
+
+    // Instâncias da Classe Balcao
+    pedidos.cadastrarPedido(new Balcao(pedidos.gerarNumero(),"Rafael","Feijoada","Coca",3,1,"12.30"));
+    pedidos.cadastrarPedido(new Balcao(pedidos.gerarNumero(),"Joao","Bacalhau","Pepis",2,1,"13" ));
+    
+    // Instâncias da Classe ContaPoupança
+    pedidos.cadastrarPedido(new Entrega(pedidos.gerarNumero(),"Geana Almeida","Frango Frita","Flexa", 2, 2, "Rua Bastos",5));
+    pedidos.cadastrarPedido(new Entrega(pedidos.gerarNumero(),"Jean Lima","Batata Frita","Guaravita",2,2,"Rua General ",7));
+
+}
+
+
+//Procura pedido por ID
+ function buscarPedido():void{
+    console.log("Digite o ID do pedido: ");
+    const numero = Input.questionInt("");
+    pedidos.procurarPorID(numero);
+ }
+
+ //Deletar Pedido Por id
+
+ function deletarContaPorNumero(): void {
+
+    console.log("Digite o numero do Pedido: ");
+    const numero = Input.questionInt("");
+    pedidos.deletar(numero);
+
+}
+
+//Atualizar
+function atualizarConta(): void {
+    
+    // Solicita o id do pedido
+    console.log("Digite o ID do Pedido: ");
+    const numero = Input.questionInt("");
+
+    // Verifica se a conta existe
+    const pedido = pedidos.buscarNoArray(numero);
+
+    //se existir
+    if(pedido !== null){
+        
+        let nome = pedido.cliente
+        let prato:string = pedido.prato;
+        let bebida:string = pedido.bebida;
+        let tipo:number = pedido.tipo;
+        let quantidade:number = pedido.quantidade;
+        
+
+        console.log(`\nCliente: ${pedido.cliente}`);
+       
+        console.log("Digite o novo Prato: ");
+        console.log("(Pressione ENTER para manter o quantidade atual)");
+        prato = Input.question( "" );
+
+        console.log(`\nCliente: ${pedido.cliente}`);
+       
+        console.log("Digite a nova Bebida: ");
+        console.log("(Pressione ENTER para manter o quantidade atual)");
+        bebida = Input.question( "" );
+
+
+        // console.log(`\Cliente: ${pedido.cliente}`);
+       
+        // console.log("Digite o novo quantidade: ");
+        // console.log("(Pressione ENTER para manter o quantidade atual)");
+        // quantidade = Input.questionFloat( "" );
+
+        switch(tipo){
+            case 1:
+
+            let Horario: string = (pedido as Balcao).hrderetirar;
+
+                // Atualização do horario
+                console.log(`\nHorario atual: ${Horario}`);
+                console.log("Digite o novo horario: ");
+                console.log("(Pressione ENTER para manter o quantidade atual)");
+                Horario = Input.question("");
+                pedidos.atualizar(new Balcao(numero,nome,prato,bebida,quantidade,tipo,Horario));
+            break;
+            case 2:
+
+            let endereco: string = (pedido as Entrega).enderaco;
+
+            // Atualização da entrega
+            console.log(`\n Endereço Atual: ${endereco}`);
+            console.log("Digite o novo dia do aniversário: ");
+            console.log("(Pressione ENTER para manter o quantidade atual)");
+            endereco = Input.question("");
+            console.log("Digite a nova Taxa: ")
+            let taxa = Input.questionInt("");
+            pedidos.atualizar(new Entrega(numero,nome,prato,bebida,quantidade,tipo,endereco,taxa));
+
+            break;
+        }
+
+
+
+
+
+
+
+
+
+    }
+
 
 }

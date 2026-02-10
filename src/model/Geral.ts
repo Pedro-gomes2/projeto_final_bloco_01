@@ -5,16 +5,16 @@ export abstract class Geral{
     private _cliente:string;
     private _prato:string;
     private _bebida:string;
-    private _valor:number;
+    private _quantidade:number;
     private _tipo:number;
 
     // Método Construtor
-	constructor(id: number, cliente: string, prato: string, bebida: string, valor: number, tipo:number) {
+	constructor(id: number, cliente: string, prato: string, bebida: string, quantidade: number, tipo:number) {
 		this._id = id;
 		this._cliente = cliente;
 		this._prato = prato;
 		this._bebida = bebida;
-		this._valor = valor;
+		this._quantidade = quantidade;
         this._tipo = tipo;
 	}
 
@@ -59,13 +59,13 @@ export abstract class Geral{
 	}
 
     
-	public get valor(): number {
-		return this._valor;
+	public get quantidade(): number {
+		return this._quantidade;
 	}
 
     
-	public set valor(value: number) {
-		this._valor = value;
+	public set quantidade(value: number) {
+		this._quantidade = value;
 	}
 
 
@@ -105,8 +105,8 @@ export abstract class Geral{
         console.log(`Nome do Cliente: ${this._cliente}`);
         console.log(`Nome do Prato: ${this._prato}`);
         console.log(`Bebida: ${this._bebida}`);
-        console.log(`Qual tipo: ${this._tipo}`);
-        console.log(`Valor: R$ ${this._valor.toFixed(2)}`);
+        console.log(`Qual tipo: ${tipo}`);
+        console.log(`quantidade: ${this._quantidade}`);
     }
 
 

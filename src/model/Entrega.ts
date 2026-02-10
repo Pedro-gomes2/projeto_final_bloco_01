@@ -1,3 +1,4 @@
+import { formatarMoeda } from "../util/Currency";
 import { Geral } from "./Geral";
 
 export class Entrega extends Geral{
@@ -38,7 +39,7 @@ export class Entrega extends Geral{
     public visualizar(): void {
         super.visualizar();
         console.log(`Endereço: ${this._enderaco}`)
-        console.log(`Valor com taxa: ${this.valor * this._txdeentrega }`);
+        console.log(`Valor da taxa: ${formatarMoeda(this._txdeentrega )}`);
     }
     
 
@@ -48,3 +49,4 @@ export class Entrega extends Geral{
 
 
 }
+

@@ -3,21 +3,21 @@ import { Geral } from "./Geral";
 export class Balcao extends Geral{
 
     // Atributos da Classe
-    private _hrderetirar: number;
+    private _hrderetirar: string;
 
     // Método Construtor
-	constructor(id: number, cliente: string, prato: string, bebida: string, valor: number, tipo:number,hrderetirar: number) {
+	constructor(id: number, cliente: string, prato: string, bebida: string, valor: number, tipo:number,hrderetirar: string) {
 		super(id,cliente,prato,bebida,valor,tipo);
         this._hrderetirar = hrderetirar;
 	}
 
     //Método Get e Set 
-	public get hrderetirar(): number {
+	public get hrderetirar(): string {
 		return this._hrderetirar;
 	}
 
     
-	public set hrderetirar(value: number) {
+	public set hrderetirar(value: string) {
 		this._hrderetirar = value;
 	}
 

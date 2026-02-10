@@ -1,12 +1,14 @@
+import { Geral } from "../model/Geral";
+
 export interface PensaoRepository{
     //fazer pedido
-    cadastrarPediddo(id:number):void;
+    cadastrarPedido(pedido:Geral):void;
     //listar pedido
     listaPedidos():void;
     //buscar por Id
     procurarPorID(id:number):void;
     //atualizar 
-    atualizar(id:number):void;
+    atualizar(pedido:Geral):void;
    //deletar
     deletar(id:number):void;
     
